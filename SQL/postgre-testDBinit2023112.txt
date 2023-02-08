@@ -1,0 +1,105 @@
+-- Database: TestDB
+
+-- DROP DATABASE IF EXISTS "TestDB";
+
+CREATE DATABASE "TestDB"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Chinese (Simplified)_China.936'
+    LC_CTYPE = 'Chinese (Simplified)_China.936'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+COMMENT ON DATABASE "TestDB"
+    IS 'TestDB';
+
+-- Table: public.Files
+
+-- DROP TABLE IF EXISTS public."Files";
+
+CREATE TABLE IF NOT EXISTS public."Files"
+(
+    "FileID" bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9999999999 CACHE 1 ),
+    "CompanyID" integer NOT NULL,
+    "ProjectID" integer NOT NULL,
+    "TicketID" integer NOT NULL,
+    "FeedbackId" integer NOT NULL,
+    "SourceType" integer NOT NULL,
+    "FileTitle" character varying COLLATE pg_catalog."default",
+    "ContentType" character varying COLLATE pg_catalog."default" NOT NULL,
+    "FileSize" numeric(18,2) NOT NULL DEFAULT 0,
+    "FilePath" character varying COLLATE pg_catalog."default",
+    "ThumbPath" character varying COLLATE pg_catalog."default",
+    "Tags" character varying COLLATE pg_catalog."default",
+    "WorkRequestID" integer,
+    "SourceID" integer NOT NULL DEFAULT 0,
+    "IsDelete" boolean NOT NULL DEFAULT false,
+    "IsPublic" boolean NOT NULL DEFAULT false,
+    "CreatedOn" date NOT NULL DEFAULT (date(timezone('UTC-8'::text, now())) - 1),
+    "CreatedBy" integer NOT NULL DEFAULT 0,
+    CONSTRAINT "Files_pkey" PRIMARY KEY ("FileID")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Files"
+    OWNER to postgres;
+-- Table: public.Tickets
+
+-- DROP TABLE IF EXISTS public."Tickets";
+
+CREATE TABLE IF NOT EXISTS public."Tickets"
+(
+    "TicketID" bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9999999999 CACHE 1 ),
+    "CompanyID" integer NOT NULL,
+    "ProjectID" integer NOT NULL,
+    "Title" character varying COLLATE pg_catalog."default",
+    "TicketCode" character varying COLLATE pg_catalog."default" NOT NULL,
+    "TicketType" integer NOT NULL,
+    "Description" character varying COLLATE pg_catalog."default",
+    "CreatedOn" date DEFAULT (date(timezone('UTC-8'::text, now())) - 1),
+    "CreatedBy" integer NOT NULL,
+    "ModifiedOn" date NOT NULL,
+    "ModifiedBy" integer NOT NULL,
+    "PublishDate" date NOT NULL,
+    "ClientPublished" boolean NOT NULL DEFAULT false,
+    "StartDate" date NOT NULL,
+    "DeliveryDate" date NOT NULL,
+    "ContinueDate" integer NOT NULL,
+    "URL" character varying COLLATE pg_catalog."default",
+    "Priority" integer NOT NULL,
+    "Status" integer NOT NULL DEFAULT 0,
+    "ConvertDelete" integer NOT NULL DEFAULT 0,
+    "IsInternal" boolean NOT NULL,
+    "CreateType" integer NOT NULL,
+    "SourceTicketID" integer NOT NULL,
+    "IsEstimates" boolean NOT NULL,
+    "InitialTime" numeric(18,2) NOT NULL,
+    "FinalTime" numeric(18,2) NOT NULL,
+    "EsUserID" integer,
+    "Star" integer NOT NULL DEFAULT 0,
+    "Source" integer NOT NULL,
+    "AdditionalState" integer NOT NULL DEFAULT 1,
+    "ConfirmEstmateUserId" integer NOT NULL DEFAULT 0,
+    "ResponsibleUser" integer NOT NULL DEFAULT 0,
+    "ProprosalName" character varying COLLATE pg_catalog."default" NOT NULL,
+    "WorkPlanName" character varying COLLATE pg_catalog."default" NOT NULL,
+    "WorkScope" character varying COLLATE pg_catalog."default" NOT NULL,
+    "Invoice" character varying COLLATE pg_catalog."default" NOT NULL,
+    "Accounting" integer DEFAULT 0,
+    "IsRead" integer NOT NULL DEFAULT 1,
+    "DueDate" date,
+    "TagsId" integer NOT NULL,
+    "FeedbackType" integer DEFAULT 1,
+    "RelatedTickets" character varying COLLATE pg_catalog."default",
+    "ExcludeDuration" boolean NOT NULL,
+    "EstimationHours" numeric(18,2) NOT NULL DEFAULT 0,
+    CONSTRAINT "Tickets_pkey" PRIMARY KEY ("TicketID")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Tickets"
+    OWNER to postgres;
